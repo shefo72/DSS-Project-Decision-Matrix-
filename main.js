@@ -109,11 +109,12 @@ function calc() {
     document.getElementById(`v${o}`).innerHTML = total[o - 1];
   }
   document.getElementById("calcBtn").remove();
-  const best = CheckBestOptino(total);
+  const bestIndexes = CheckBestOptino(total);
+  const bestOptions = bestIndexes.map((i) => optionsName[i]).join(" and ");
   document.getElementById("result").innerHTML = `
-  <p class="alert  text-center fs-4 fw-bold">
-  <i class="fa-solid fa-cubes me-2"></i> Best Option : ${optionsName[best]}
-</p>`;
+  <p class="alert text-center fs-4 fw-bold">
+  <i class="fa-solid fa-cubes me-2"></i> Best Option : ${bestOptions}
+  </p>`;
   afterCalc();
 }
 
@@ -128,8 +129,13 @@ function createArraysForOpthions(num) {
 
 function CheckBestOptino(arr) {
   const bestValue = Math.max(...arr);
-  const index = arr.indexOf(bestValue);
-  return index;
+  const indexes = [];
+  arr.forEach((val, idx) => {
+    if (val === bestValue) {
+      indexes.push(idx);
+    }
+  });
+  return indexes;
 }
 
 function afterCalc() {
